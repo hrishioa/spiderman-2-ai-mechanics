@@ -1,0 +1,59 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Flying Enemies
+
+One of the main challenges we faced during the development of Marvel's Spider-Man was creating a satisfactory AI system for flying enemies. We had plans to include a variety of aerial foes, such as disabled jetpack troopers and two major flying bosses, Electro and Vulture. However, we didn't have sufficient time to develop dedicated tech for handling flying characters, which ultimately hindered the final experience.
+
+<Callout type="warning">
+Due to time constraints, the solutions we implemented for flying enemies were far from ideal and led to noticeable issues in the final game.
+</Callout>
+
+### Jetpack Troopers
+
+For the jetpack troopers, we took a simplistic approach. These enemies were essentially grounded, hovering above the navigation mesh. We gave them the ability to temporarily go off the nav mesh if they could see their destination, maintaining a breadcrumb trail of points to return to the nav mesh.
+
+While this solution worked in some cases, it often resulted in jetpack troopers awkwardly steering around obstacles at ground level, breaking the illusion of flight. [Diagram to be made of a jetpack trooper navigating around an obstacle on the ground].
+
+### Flying Bosses: Electro and Vulture
+
+The flying boss characters, Electro and Vulture, used a more complex system involving hand-authored volumes and splines. Each boss had a collection of volumes linked by splines, allowing them to move freely within the volumes and transfer between them using the splines.
+
+However, this approach required extensive manual authoring for each encounter, making it impractical to use throughout the entire game. [Diagram to be made of the volume and spline system used for flying bosses].
+
+<Callout type="warning">
+While these solutions allowed us to ship the game, they were far from ideal. The jetpack troopers often exhibited unnatural flight behavior, and the flying boss system was too labor-intensive to be used widely.
+</Callout>
+
+In hindsight, we should have dedicated more time and resources to developing a robust, general-purpose system for handling flying characters. Some potential solutions could have included:
+
+- Implementing dedicated navigation data structures for 3D pathfinding and movement.
+- Developing more advanced procedural animation systems to handle transitioning between flight and grounded states.
+- Exploring physics-based approaches for simulating realistic flight dynamics.
+
+Ultimately, the lack of a dedicated flying AI system was a significant limitation in Marvel's Spider-Man, and it's an area we hope to improve upon in future projects.
+
+<Steps>
+
+### Step 1
+
+Familiarize yourself with the challenges specific to flying enemies by reviewing the relevant section in the [AI Architecture in Marvel's Spider-Man](/ai-architecture-in-marvels-spider-man) documentation.
+
+### Step 2
+
+Explore potential solutions and techniques for handling flying characters in games by researching industry best practices and academic literature.
+
+### Step 3
+
+Prototype and evaluate different approaches, such as dedicated navigation data structures, procedural animation systems, and physics-based simulations.
+
+### Step 4
+
+Integrate the chosen solution into your game engine, ensuring seamless integration with existing AI systems and character controllers.
+
+### Step 5
+
+Iterate and refine the flying AI system based on playtesting feedback and performance considerations.
+
+</Steps>
+
+By addressing the flying AI challenges early in the development process and dedicating sufficient time and resources, you can create a more cohesive and immersive experience for players when dealing with aerial foes.

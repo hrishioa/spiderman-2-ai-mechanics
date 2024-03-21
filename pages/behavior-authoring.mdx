@@ -1,0 +1,99 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Behavior Authoring
+
+In Marvel's Spider-Man, the AI team at Insomniac Games transitioned from using complex behavior trees to a more data-driven approach with hierarchical finite state machines (FSMs). This shift was driven by the game's ambitious scope and the need to efficiently create a large number of unique AI classes and behaviors.
+
+### From Behavior Trees to Data-Driven FSMs
+
+Early in the development process, the team recognized that relying solely on behavior trees would not be a sustainable approach. Marvel's Spider-Man features:
+
+- 5 major enemy factions
+- 8 common enemy archetypes across factions
+- Variations of archetypes per faction
+- 11 boss fights
+
+In total, the team had to create 64 distinct AI classes, most of which required unique attacks, reactions, or behaviors. This was a significant increase from their previous project, Sunset Overdrive, which had only 19 classes.
+
+> **Callout: Sunset Overdrive Behavior Tree Example**
+>
+> A corner of the behavior tree that drove ranged enemy behavior in Sunset Overdrive used 34 discrete nodes, many of which mapped to simple AI states like playing an animation, shuffling, or aiming.
+
+While behavior trees worked in previous projects, the added complexity and interconnected nature of the nodes made them challenging to debug and maintain. Reusing nodes or subtrees became increasingly difficult, as the team had to consider the behavior of siblings and ancestors within the tree.
+
+> **Callout: Drawbacks of Complex Behavior Trees**
+>
+> - Numerous callback functions for decision-making, state transitions, and notifications
+> - Dependence on group policies (priority, sequence, or score-based) for node selection
+> - Difficulty in composing reusable nodes due to interdependencies
+
+To overcome these challenges, the team gradually shifted towards smaller, more straightforward behavior trees, with behaviors encapsulating much of the complex logic previously entangled in callback functions.
+
+### Data-Driving AI Behaviors
+
+As behaviors became more robust, the team began data-driving significant portions of the AI logic. Two notable examples illustrate this approach:
+
+1. **Script Control Behavior**
+
+This behavior allowed designers to have explicit control over enemy AI by issuing commands through a queue. Instead of responding to designer scripting through behavior tree nodes, the AI consumed commands from the queue and transformed them into states or sub-behaviors.
+
+<Steps>
+
+### Step 1: Creating Bot Commands
+
+Scripts create `BotCommand` objects and add them to a `BotCommandQueue`.
+
+```cpp
+// Example of issuing commands from a script
+BotCommandQueue.AddCommand(new GotoPositionCommand(somePosition));
+BotCommandQueue.AddCommand(new FaceTargetCommand(targetPosition));
+BotCommandQueue.AddCommand(new PlayAnimCommand("AttackAnimation"));
+```
+
+### Step 2: Consuming Commands
+
+The `BehaviorScripted` class retrieves commands from the queue and uses them to instantiate sub-behaviors or states.
+
+```cpp
+void BehaviorScripted::Update(float deltaTime)
+{
+    if (currentCommand && currentCommand->IsDone())
+    {
+        ConsumeNextCommand();
+    }
+}
+
+void BehaviorScripted::ConsumeNextCommand()
+{
+    if (commandQueue->HasCommands())
+    {
+        currentCommand = commandQueue->GetNextCommand();
+        currentCommand->Start(this); // Attach as parent behavior
+    }
+}
+```
+
+</Steps>
+
+2. **Melee Combat Behavior**
+
+This data-driven system managed enemy melee combat by using polymorphic data structures to represent different attack types (e.g., melee strikes, projectile throws) and their associated parameters.
+
+[Diagram to be made of the melee combat data hierarchy]
+
+At the lowest level, each `BotComboMoveBase` derived type contained static data needed to execute a specific attack, such as animations, timing information, or projectile assets. These were encapsulated in `BotComboMoveContainer` structs, which also included parameters for preparing the attack, like line-of-sight requirements or ideal range.
+
+The `BehaviorUseCombosbo mbo` managed the execution of these attacks, transitioning between states like waiting, moving to the target, and performing the combo move based on the data in the `BotComboMoveContainer`.
+
+> **Callout: Advantages of Data-Driven Behaviors**
+>
+> - Easy to add new moves without changing complex logic
+> - Loose coupling between states and data (multiple moves could map to the same state)
+> - Ability to control what data was exposed to designers while handling messy logic in code
+> - Facilitated creating numerous AI classes that differed only in data
+
+By adopting a more data-driven approach to behavior authoring, the team could share structures and behaviors across nearly all standard enemies, significantly streamlining the development process for the game's diverse cast of AI characters.
+
+[Link to AI Architecture at Insomniac Games](/behavior-authoring/ai-architecture-at-insomniac-games)
+
+[Link to Transition to Data-Driven FSMs](/behavior-authoring/transition-to-data-driven-fsms)

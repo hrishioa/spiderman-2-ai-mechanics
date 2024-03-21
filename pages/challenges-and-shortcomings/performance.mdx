@@ -1,0 +1,45 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Performance
+
+One of the significant challenges we faced during the development of Marvel's Spider-Man was managing the performance impact of running complex AI in an open-world environment. Despite our efforts to optimize the system, we ultimately had to impose a limit of around 30 active and engaged enemies at any given time. This limit was necessary to maintain a smooth gameplay experience, considering the additional load from Spider-Man, traffic, and pedestrians.
+
+There were two primary factors contributing to the performance issues:
+
+1. **Physics**: As the number of enemies increased, we observed a substantial increase in the time spent on physics calculations. This was evident not only on the main thread but also across our worker threads. While not all of this time was directly attributable to the AI systems, it grew proportionally with the number of active enemies.
+
+[Diagram to be made of CPU profiling data showing the impact of physics calculations on different threads as the number of enemies increases]
+
+2. **Main Thread AI Logic**: A significant portion of our core AI logic still ran on the main thread, which could consume several milliseconds per frame. This overhead became more pronounced as the number of enemies grew, even without considering the impact of the character movement and animation systems.
+
+<Callout emoji="⚠️">
+Here's a capture of our main thread during a typical frame, with the highlighted sections representing bot-specific logic consuming over 4 milliseconds of time.
+
+[Diagram to be made of a main thread profiling data with bot-specific logic highlighted]
+</Callout>
+
+It's worth noting that while we made efforts to optimize our AI systems, there were inherent limitations in our engine and the game's design that made it challenging to fully address these performance concerns. Ultimately, we had to strike a balance between maintaining an engaging and challenging experience while ensuring smooth gameplay.
+
+<Steps>
+
+### Step 1
+
+To mitigate the performance impact, we implemented a limit on the number of active and engaged enemies. This limit was determined through extensive testing and profiling, taking into account the additional load from Spider-Man, traffic, and pedestrians.
+
+### Step 2
+
+We continuously monitored and optimized our physics calculations, particularly those related to the AI systems. This included identifying and addressing any unnecessary computations or inefficiencies in our physics engine.
+
+### Step 3
+
+We explored opportunities to offload more of the AI logic to worker threads, reducing the burden on the main thread. However, this was a complex undertaking and had to be carefully balanced against the potential introduction of synchronization issues or other race conditions.
+
+### Step 4
+
+We conducted regular performance profiling and optimization passes, identifying and addressing any performance hotspots or bottlenecks in our AI systems. This involved a combination of code optimizations, data structure improvements, and careful design choices.
+
+</Steps>
+
+While we were able to deliver a compelling and engaging experience with Marvel's Spider-Man, the performance challenges we faced serve as a valuable lesson for future open-world games with complex AI systems. Continuous optimization, careful resource management, and innovative solutions will be crucial in delivering seamless and immersive experiences as game worlds become more expansive and AI systems become more sophisticated.
+
+To learn more about the specific challenges and solutions related to [flying enemies](/challenges-and-shortcomings/flying-enemies), [moving platforms](/challenges-and-shortcomings/moving-platforms), and [nav mesh](/challenges-and-shortcomings/nav-mesh), refer to the respective subsections.

@@ -1,0 +1,47 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Nav Mesh
+
+One of the significant challenges we faced during the development of Marvel's Spider-Man was related to the navigation mesh, or nav mesh, which is a crucial component of our AI system. Nav meshes are used to define walkable areas for characters, allowing them to navigate the game world efficiently and naturally.
+
+The primary issue we encountered was the inability to load different nav meshes based on the game state. As the story progressed, Manhattan underwent various changes, such as the establishment of checkpoints by Sable International, the emergence of prisoner bases, and the accumulation of garbage and debris. These dynamic changes in the game world required corresponding updates to the nav mesh.
+
+<Callout emoji="⚠️">
+Our nav mesh system was designed to build and load nav meshes on a per-tile basis, which proved to be a limitation when we needed to reflect the changing game state in the nav mesh.
+</Callout>
+
+To address this challenge, we initially attempted to generate the nav mesh at runtime. However, the CPU performance impact of this approach was deemed unacceptable, rendering it an unfeasible solution.
+
+<Steps>
+
+### Step 1
+
+Our solution was to generate the nav mesh in its most complicated state, representing the game world in its most cluttered and obstructed condition.
+
+### Step 2
+
+We then relied on scripting to disable portions of the nav mesh dynamically, effectively simulating the changes in the game world.
+
+</Steps>
+
+Here's an example to illustrate this approach:
+
+1. **Act One (Normal Conditions)**: The nav mesh would contain floating patches and holes cut out to accommodate objects that would be present in later acts, but not yet visible in Act One.
+
+[Diagram to be made of the nav mesh in Act One, showing floating patches and holes]
+
+2. **Act Three (Base Active)**: By disabling certain portions of the nav mesh using scripting, we could simulate the presence of the base and other obstructions, altering the navigation paths accordingly.
+
+[Diagram to be made of the nav mesh in Act Three, showing the base and obstructions]
+
+While this solution allowed us to ship the game, it was not without its drawbacks. The process was often buggy, and in some cases, we had to remove certain open-world activities or crimes from specific areas to avoid navigation issues during Acts One and Two.
+
+<Callout emoji="📝">
+Improving the nav mesh system to handle dynamic changes in the game world more seamlessly is an area we plan to focus on in future projects.
+</Callout>
+
+To learn more about the challenges and solutions related to other aspects of AI development in Marvel's Spider-Man, you can explore the following sections:
+
+- [performance](/challenges-and-shortcomings/performance): Performance issues and limitations faced when running complex AI in an open world.
+- [moving-platforms](/challenges-and-shortcomings/moving-platforms): Challenges and workarounds for combat scenarios on moving platforms like trucks.
+- [flying-enemies](/challenges-and-shortcomings/flying-enemies): Limitations in developing AI for flying enemies and the implemented solutions.

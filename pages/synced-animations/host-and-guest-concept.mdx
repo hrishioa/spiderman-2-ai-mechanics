@@ -1,0 +1,34 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Host and Guest Concept
+
+The core idea behind the synced animations in Marvel's Spider-Man is the concept of a "host" and a "guest." This approach allows for seamless animation synchronization between Spider-Man (the attacker) and his opponents (the victims) during combat encounters.
+
+- The **host** is typically Spider-Man, who initiates the attack or interaction.
+- The **guest** is the enemy character, who receives and reacts to the attack.
+
+<Callout>
+The host-guest relationship is crucial for maintaining the fidelity and responsiveness of the synced animations, ensuring that Spider-Man's attacks connect with his foes in a dynamic and visually appealing manner.
+</Callout>
+
+The system hinges on a concept called the **sync joint**, which we'll explore in detail in the [Sync Joint](/synced-animations/sync-joint) section. Essentially, the sync joint is a specific joint on the host character (Spider-Man) that serves as a reference point for aligning the guest character's position and orientation during the synced animation sequence.
+
+[Diagram to be made of the host-guest concept, showing Spider-Man as the host and an enemy as the guest, with the sync joint highlighted on Spider-Man's model]
+
+<Steps>
+
+### Step 1: Host Initiates the Attack
+
+The host character (Spider-Man) begins the attack animation sequence. At this stage, the guest character (the enemy) may or may not be playing a corresponding reaction animation.
+
+### Step 2: Guest Reacts or Syncs with the Host
+
+If the guest character is within range and meets the required conditions (e.g., line of sight, target validation), it will sync its position and orientation with the host's sync joint. This alignment ensures that the guest character is properly positioned to receive the attack and play the corresponding reaction animation.
+
+If the guest character cannot sync or react (e.g., due to being in an unsuitable state or failing to meet the conditions), the host's attack animation will still play out, but without the synced interaction with the guest.
+
+</Steps>
+
+The host-guest concept allows for flexibility in the combat system. Spider-Man can perform synced attacks against opponents who are prepared to react, while also ensuring that his animations remain fluid and responsive, even when enemies fail to sync or react appropriately.
+
+By separating the roles of the attacker (host) and the receiver (guest), the synced animation system can handle a wide range of combat scenarios, from precisely choreographed finishers to dynamic, improvisational battles against multiple foes.

@@ -1,0 +1,36 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Adapting to Fundamental Changes
+
+When your game's core problem fundamentally changes, you need a fundamental change in your solutions. This may sound obvious, but it's harder than it seems.
+
+In the case of Marvel's Spider-Man, Insomniac Games had to pivot from making shooters to creating a character action game. This shift affected various aspects of the game's development, including:
+
+- **Behavior Authoring**: As discussed in the [Behavior Authoring](/behavior-authoring) section, the team transitioned from using complex behavior trees to adopting data-driven hierarchical finite state machines. This was necessary to handle the large number of AI classes and unique behaviors required for a character action game.
+
+- **Positioning**: The [Combat Iteration](/combat-iteration) section highlighted how the team had to rethink enemy positioning and movement to create engaging combat encounters without making the player feel overwhelmed or mobbed.
+
+<Callout>
+The team developed a gradient descent hill climber algorithm to find optimal positions for enemies to stand, considering factors like Spider-Man's position, navigation mesh boundaries, and personal space reservations.
+</Callout>
+
+- **Combat Management**: As mentioned in the [Melee Combat Management](/combat-iteration/melee-combat-management) and [Ranged Combat Management](/combat-iteration/ranged-combat-management) sections, the combat managers had to be significantly iterated upon to address issues like cheap hits, off-screen attacks, and player frustration.
+
+<Steps>
+
+### Step 1
+Implement simple combat managers for melee and ranged enemies based on shooter game principles.
+
+### Step 2
+Iterate on the managers, introducing concepts like job stealing, proximity attacks, intensity meters, on-screen prioritization, and varying timing values based on player actions and melee enemy presence.
+
+### Step 3
+Develop the [Beat to the Punch System](/combat-iteration/beat-to-the-punch-system) to ensure fair interactions when Spider-Man and enemies attack simultaneously.
+
+</Steps>
+
+The key lesson here is that when the core problem changes, the solutions must fundamentally adapt as well. The team recognized that their existing shooter-focused systems were not sufficient for a character action game and made the necessary architectural and design shifts to address the new challenges.
+
+[Diagram to be made of the iterative process of adapting combat managers from shooter principles to character action principles]
+
+This iterative process of adaptation was essential in creating a combat system that felt engaging, fair, and true to the Spider-Man experience. By being willing to rethink their approaches and solutions, the team was able to overcome the challenges posed by the fundamental shift in game genre.

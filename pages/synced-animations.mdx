@@ -1,0 +1,75 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Synced Animations
+
+Achieving a Marvel feel in the game was a key goal, and one way we accomplished this was through the use of synced animations. This technique allowed us to create high-fidelity combat animations and reactions that gave the game a cinematic, comic book-like quality.
+
+<Callout>
+Our creative director set the goal of giving Spider-Man a comic book movie feel, which drove many of our design decisions, including the implementation of synced animations.
+</Callout>
+
+## The Host and Guest Concept
+
+At the core of our synced animation system lies the concept of a **host** and a **guest**. The host is typically Spider-Man, the attacker, while the guest is the victim or recipient of the attack.
+
+<Steps>
+
+### Step 1
+
+The host initiates the synced animation, setting the stage for the guest's reaction.
+
+### Step 2
+
+The guest responds by playing a complementary reaction animation, synced with the host's attack.
+
+</Steps>
+
+## The Sync Joint
+
+The key to aligning the animations between the host and the guest is a special joint called the **sync joint**. This joint, represented by a white debug sphere, is located on the host character's model.
+
+[Diagram to be made of the sync joint and its role in aligning animations]
+
+During a synced animation, the position and orientation of the sync joint on the host is matched to a corresponding point on the guest's model. This ensures that the two characters are properly aligned for the attack and reaction animations to play out seamlessly.
+
+## Rotation and Translation Alignment
+
+To achieve accurate alignment between the host and guest, we employed various techniques for handling rotation and translation. These techniques could be selected independently, allowing for flexibility in how the characters would move and orient themselves.
+
+### Rotation Alignment
+
+- **Host-to-Guest (Center Line)**: Both the host and guest rotate to face each other along a line drawn between them. This was the most common approach used.
+- **External Anchor**: The characters rotate towards an external target orientation, set by code. This was useful for attacks where the player could influence the direction, such as Spider-Man's kick-throw.
+
+### Translation Alignment
+
+- **Host-as-Anchor**: The guest moves into position relative to the host's sync joint. This approach was used when Spider-Man was unable to move, such as during certain finishers.
+- **Guest-as-Anchor**: Spider-Man, as the host, performs all the necessary translation to align with the guest's position. This was the primary technique used for the majority of attacks.
+
+## Challenges and Solutions
+
+Implementing synced animations presented several challenges that required creative solutions.
+
+### Height Differences
+
+[Diagram to be made of height difference handling during synced animations]
+
+One common issue was when the host and guest were at different heights from their animated or motion-captured positions. To address this:
+
+- For stealth takedowns and combat finishers with animated cameras, we could hide floating characters by pulling the camera in before the sync point and pushing it back out after the release point.
+- In some cases, we used procedurally altered webbing to bridge the height gap between characters.
+- For regular melee attacks and certain finishers, we sometimes had to accept slight misalignments.
+
+### Environment Interaction
+
+Our character movement system remained active during synced animations, allowing for dynamic adjustments if one character collided with the environment. In such cases, the failed translation could be passed to the other participant, enabling them to slide and sync up.
+
+### Multi-Character Interactions
+
+A significant drawback of our synced animation system was that it only supported two characters: a host and a guest. One frequently requested feature was the ability to have finishers where Spider-Man could take down multiple foes simultaneously. However, our system lacked this capability.
+
+<Callout>
+While synced animations added a great deal of fidelity to our combat, they also introduced challenges and limitations. We had to find creative solutions to address issues like height differences and environment interactions, while accepting certain compromises, such as the inability to support multi-character finishers.
+</Callout>
+
+With the [synced animations](/synced-animations) section covered, we can move on to exploring the [combat iteration](/combat-iteration) process, where we'll discuss how we refined and polished the core combat mechanics to create an engaging and enjoyable experience.

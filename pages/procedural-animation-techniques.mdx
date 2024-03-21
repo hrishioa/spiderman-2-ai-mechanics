@@ -1,0 +1,81 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Procedural Animation Techniques
+
+In Marvel's Spider-Man, we developed several procedural animation solutions to tackle specific challenges presented by the game's unique requirements. These techniques allowed us to create dynamic and visually compelling animations while maintaining performance and flexibility.
+
+## Web Blanket
+
+One of the core mechanics in the game involved Spider-Man using his webs to immobilize enemies by sticking them to surfaces. However, with the game's diverse environments and the potential for enemies to be in unexpected poses due to ragdoll physics, a simple pre-animated or decal-based approach wasn't feasible.
+
+Our solution was the "Web Blanket" system, a procedural method for attaching webs to uneven surfaces and ragdolled characters.
+
+<Steps>
+
+### Step 1
+
+The system starts by generating an ideal world-space orientation for the web attachment. This orientation is then passed to the Web Blanket model, which is a lattice of joints representing the web.
+
+[Diagram to be made of the initial Web Blanket model]
+
+### Step 2
+
+When spawned, the Web Blanket projects rays from a position above the initial orientation through each joint's position as if the model were naively placed there. The points where these rays intersect with the environment or character determine the final positions for the corresponding joints.
+
+[Diagram to be made of the raycasting process]
+
+### Step 3
+
+If a raycast doesn't hit anything, the system rotates the ray towards the blanket's initial point, causing the blanket to wrap around the target object.
+
+### Step 4
+
+The joints are allowed to rescan for a period of time, enabling the blanket to adapt to settling ragdolls or animating characters without bunching up on itself.
+
+</Steps>
+
+> **Callout:**
+>
+> The Web Blanket system also featured additional behaviors, such as allowing joints to rescan if the attachment point moved too far from the initial position, preventing the blanket from stretching across the entire level.
+
+## Whip Simulation
+
+Several enemies in the game were equipped with whip-style weapons, which needed to interact with Spider-Man in a dynamic and visually compelling way. However, a regular cloth simulation didn't provide the desired results, and animating the whips for every possible scenario was impractical.
+
+Our solution was a procedural whip simulation system that could blend seamlessly with animations from other character classes.
+
+<Steps>
+
+### Step 1
+
+The whips are part of the base character model and appear in a default, non-simulated state for animations where they haven't been specifically animated.
+
+### Step 2
+
+When the simulation is active, the system tracks the position of each joint in the whip chain from frame to frame and naively applies the host character's motion to each joint.
+
+### Step 3
+
+The system then applies a series of constraints to the whip chain, including:
+
+- **Distance constraint**: Corrects the distance between adjacent joints to maintain the desired length of the whip segments.
+- **Curvature constraint**: Ensures smooth curvature along the whip chain by aligning each joint with its parent and child joints.
+- **Gravity constraint**: Applies a downward force to simulate the effect of gravity on the whip.
+- **Ground constraint**: Prevents the whip from penetrating the ground plane.
+- **Move capsule constraint**: Keeps the whip from clipping through the character's move capsule (the character's collision volume).
+
+### Step 4
+
+These constraints are applied iteratively, with the number of iterations increasing as the character gets closer to the camera for improved visual fidelity.
+
+</Steps>
+
+> **Callout:**
+>
+> To blend the whip simulation with character animations, the system used events placed on animation clips to transition between simulated and animated states. These events controlled a blend speed that determined the percentage of the whip chain driven by simulation or animation.
+
+One of the primary goals for this enemy class was to either hold Spider-Man in place or pull him out of the air during attacks. To achieve this, the system could procedurally align the whip to arbitrary world-space positions during attack animations, ensuring that the whip interactions looked believable and responsive.
+
+[Diagram to be made of the whip alignment process]
+
+Both the Web Blanket and Whip Simulation systems demonstrated the power of procedural animation techniques in creating dynamic and visually compelling results while maintaining performance and flexibility.

@@ -1,0 +1,49 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Combat Iteration
+
+**Core problems and iterations in the combat system.**
+
+At Insomniac Games, we recognized that creating an engaging and fair combat system for Marvel's Spider-Man was crucial to delivering an authentic experience of being the web-slinger. We encountered several core problems and underwent numerous iterations to address them, ultimately shaping the combat mechanics that players experienced in the final game.
+
+One of the biggest challenges we faced was managing attacks and mitigating cheap hits. Early on, combat felt overwhelming, with enemies relentlessly attacking Spider-Man without any sense of pacing or fairness. We quickly realized that we needed to implement systems to control when enemies could attack and create windows of opportunity for the player to counterattack.
+
+<Callout emoji="🚨">
+**Cheap hits** refer to situations where Spider-Man gets hit by an enemy attack in a way that feels unfair or frustrating to the player, often due to timing or positioning issues.
+</Callout>
+
+## Melee Combat Management
+
+To manage melee combat, we introduced a combat manager that controlled the distribution of attack jobs (tokens allowing an enemy to attack Spider-Man). Initially, we started with a simple scheme:
+
+- Only one enemy could have an attack job at a time.
+- After the player dodged, they would get a short window where no enemies could attack, allowing them to counterattack.
+
+However, this system quickly revealed its flaws. Enemies too far away would receive the attack job, leading to long periods of inactivity before they could engage. To address this, we implemented two solutions:
+
+1. **Job Stealing**: If an enemy closer to Spider-Man was ready to attack, they could steal the attack job from a distant enemy.
+2. **Proximity Attacks**: If Spider-Man stayed too close to an enemy for a split second, the manager could create an additional attack job, forcing the nearby enemy to attack.
+
+While these improvements made combat feel more responsive, we soon noticed that encounters could become too predictable and stale. To inject more intensity and variety, we introduced an **intensity meter** that filled as enemies attacked. This meter allowed the manager to give out multiple attack jobs simultaneously or in rapid succession, creating intense moments of heightened combat.
+
+<Steps>
+
+### Step 1: Managing Ranged Combat
+
+Ranged combat presented its own set of challenges. Our initial solution involved a cooldown window where no ranged enemies could attack, followed by an attack window with a limited number of simultaneous attack jobs.
+
+While this prevented ranged combat from becoming overwhelming, it felt unfair when Spider-Man was attacked from off-screen without warning. To address this, we prioritized giving attack jobs to on-screen enemies and extended the Spider-Sense warning duration for off-screen attacks, giving the player more time to react.
+
+### Step 2: Adjusting for Melee Enemies
+
+With both melee and ranged enemies in play, we introduced additional timing adjustments. When melee enemies were present, the ranged combat manager would reduce the attack window duration and increase the cooldown period, allowing Spider-Man breathing room to engage in close-quarters combat.
+
+However, this created a new issue when Spider-Man took to the air, as the slower timing values made enemies feel unresponsive. Our solution was **air aggression**, a system that increased the chances of exiting the cooldown period based on the player's aerial actions, keeping ranged enemies engaged during air combat.
+
+</Steps>
+
+Despite these iterations, players still felt that some enemy attacks felt cheap or unavoidable. To address this, we implemented a list of actions that would cancel incoming attack jobs if performed by the player, such as throwing objects, dodging, or using finishers. This system, combined with the [Beat to the Punch System](/combat-iteration/beat-to-the-punch-system), greatly mitigated instances of cheap hits and improved the overall fairness of combat.
+
+[Diagram to be made of the combat manager systems and how they interact with each other]
+
+By continuously iterating and refining our combat management systems, we were able to create a dynamic and engaging combat experience that felt challenging yet fair, allowing players to truly embody the agility and prowess of Spider-Man.

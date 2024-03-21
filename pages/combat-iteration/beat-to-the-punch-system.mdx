@@ -1,0 +1,50 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Beat to the Punch System
+
+One of the key issues players faced in early iterations of the combat system was feeling that enemy attacks were "cheap" or unfair, particularly in situations where Spider-Man would attempt to attack an enemy that was already in the process of attacking him. Despite correctly identifying and reacting to the incoming attack, the timing of the animations would often result in Spider-Man being hit before his attack could interrupt the enemy.
+
+To address this frustration, we implemented a system called "Beat to the Punch," which guarantees that Spider-Man will always win these simultaneous attack interactions. Here's how it works:
+
+<Callout type="info">
+The Beat to the Punch system ensures that Spider-Man's attacks take priority over enemy attacks when they occur simultaneously, preventing frustrating situations where players feel cheated.
+</Callout>
+
+### Activation and Visual Cue
+
+The Beat to the Punch system activates as Spider-Man's attacks approach their impact frame (the frame where the attack should connect with the target). During this window, a red sphere becomes visible around Spider-Man, indicating that the system is active.
+
+[Diagram to be made of the red sphere visual cue]
+
+### Attack Interruption
+
+While the system is active, it examines each incoming enemy attack to determine if Spider-Man's current attack would force a reaction from that enemy. If it would, the system grants Spider-Man temporary immunity from that enemy's attack until he has passed his own impact frame.
+
+<Steps>
+
+### Step 1
+Examine each incoming enemy attack during the Beat to the Punch window.
+
+### Step 2 
+Determine if Spider-Man's current attack would force a reaction from the enemy.
+
+### Step 3
+If so, grant Spider-Man immunity from that enemy's attack until after his impact frame.
+
+</Steps>
+
+This simple yet effective system ensures that, in cases where Spider-Man and an enemy are attacking each other simultaneously, Spider-Man will always "beat the enemy to the punch" and land his attack first, preventing frustrating situations where the player feels cheated.
+
+[Diagram to be made of the system interrupting an enemy attack]
+
+### Impact on Gameplay
+
+The Beat to the Punch system was the final piece needed to address the majority of player complaints regarding "cheap hits" in combat. By guaranteeing that Spider-Man's attacks take priority in these specific situations, the system reinforces the player's ability to properly identify and react to incoming attacks, leading to a more fair and satisfying combat experience.
+
+Additionally, the system helps maintain the flow and improvisation that the combat team aimed for, as players can confidently continue their offensive without fear of being interrupted unfairly by enemies they have already identified and reacted to.
+
+<Callout type="info">
+The Beat to the Punch system not only addressed a major source of player frustration but also reinforced the intended fast, fluid, and dynamic playstyle of Spider-Man's combat.
+</Callout>
+
+For more information on the overall [combat iteration](/combat-iteration) process, including the evolution of the [melee combat management](/combat-iteration/melee-combat-management) and [ranged combat management](/combat-iteration/ranged-combat-management) systems, check out their respective sections.

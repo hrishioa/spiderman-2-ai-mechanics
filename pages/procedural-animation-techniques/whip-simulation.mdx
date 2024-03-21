@@ -1,0 +1,88 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Whip Simulation
+
+We had planned to give a lot more enemies the ability to use whip-style weapons versus Spider-Man. Unfortunately, we found that a regular cloth simulation didn't give us the desired results, and we couldn't just animate the whips because we needed to reuse animations from other classes, especially for locomotion and hit-react animations.
+
+To solve this, we developed a procedural solution that could be fully animation-controlled when necessary. The whips are part of the base model, and they look like regular appendages in any animation where they haven't been animated.
+
+<Callout>
+For example, when the whip simulation is not engaged, Tombstone's whips would look like this:
+
+[Diagram to be made of Tombstone's model with whips looking like regular appendages]
+</Callout>
+
+However, when the simulation is fully engaged, the whips look and behave like actual whips:
+
+[Diagram to be made of Tombstone's whips simulating realistically]
+
+### How It Works
+
+The core idea is that for each joint in the whip chain, we track its position from frame to frame and naively apply the host motion to each joint. Then, we apply a series of constraints to make the chain behave realistically.
+
+<Steps>
+
+### Step 1: Distance Constraint
+
+We apply a distance constraint to correct for unrealistic stretching or compression of the chain. This constraint uses a zero-to-one stiffness parameter and is performed in two passes:
+
+1. Forward pass down the chain
+2. Backward pass up the chain
+
+We perform half of the error correction on each pass.
+
+### Step 2: Curvature Constraint
+
+Without a curvature constraint, the chain would fall through Tombstone's hand, even though the chain's root is oriented horizontally. The curvature constraint has two passes:
+
+1. The first pass keeps each child joint aligned with its parent.
+2. The second pass constrains each joint to both its parent and its child.
+
+This prevents kinks in the chain and ensures a smooth blend from the animated joints to the simulated ones.
+
+</Steps>
+
+We also apply additional constraints:
+
+- **Gravity Constraint**: To keep the chain from floating
+- **Ground Constraint**: To prevent the chain from sinking through the floor
+- **Move Pill Constraint**: To ensure each joint is outside the character's move capsule (to avoid clipping through the character's body)
+
+The order in which we apply these constraints is:
+
+1. Gravity
+2. Curvature 
+3. Move Pill
+4. Distance
+5. Ground
+
+We iterate over all these constraints up to eight times per frame, depending on how close the character is to the camera.
+
+### Controlling the Simulation
+
+To control whether the chain is driven by animation or simulation, we start by assuming it's always simulated. Then, we place events on animation clips when the chain should transition to being animated and when it should transition back to being simulated. These events contain a blend speed that's used to change a 0-to-1 value representing the percentage of the chain that's simulated.
+
+<Callout>
+No joint is ever driven by both simulation and animation simultaneously.
+</Callout>
+
+### Aligning to World Space Positions
+
+One of our main goals was to make the whips able to either hold Spider-Man in place or pull him out of the air during attacks. This required blending the whip to arbitrary world space positions while looking natural.
+
+For each whip joint, we compute where it would be if the enemy was perfectly aligned with their target. The difference between the animated and aligned positions is the error. We then apply a portion of this error to move the joint towards its aligned position, with the portion increasing linearly down the chain.
+
+[Diagram to be made of whip joints aligning to world space position]
+
+This procedural alignment is controlled with four animation events:
+
+1. Start blending on
+2. Finish blending on
+3. Start blending off 
+4. Finish blending off
+
+Here's what the whip alignment looks like in action:
+
+[Video example of whip aligning to pull Spider-Man]
+
+Overall, this procedural whip system allowed us to create dynamic, physics-driven whip attacks that could blend naturally with character animations and interact with Spider-Man in the intended way.

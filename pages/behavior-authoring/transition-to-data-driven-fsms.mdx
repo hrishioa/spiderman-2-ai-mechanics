@@ -1,0 +1,71 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Transition to Data-Driven FSMs
+
+As the scope of Marvel's Spider-Man grew larger, with more enemy types and varied combat scenarios, we recognized the need to shift away from complex behavior trees and embrace a more data-driven approach using hierarchical finite state machines (FSMs).
+
+This transition was driven by several factors:
+
+- **Scale**: Marvel's Spider-Man was the largest game Insomniac Games had developed to date, featuring five major factions, eight archetypes with variations, and 11 boss fights. We needed to create 64 AI classes, most requiring unique attacks, reactions, or behaviors.
+
+- **Team Size**: Despite the increased scope, we had a slightly smaller gameplay team compared to our previous major project, Sunset Overdrive.
+
+- **Reusability and Composability**: Behavior trees became increasingly complex, making it challenging to reuse nodes across different AI classes or compose new behaviors from existing ones.
+
+The solution was to move towards smaller, more straightforward behavior trees, with much of the complexity and logic encapsulated within data-driven behaviors.
+
+<Callout>
+Nearly all standard enemies in Marvel's Spider-Man use the exact same behavior tree and set of behaviors, allowing us to share structure and logic across AI classes.
+</Callout>
+
+### Data-Driven Scripting Control
+
+One example of this shift was the implementation of a system that allowed designers to explicitly control enemy AI through scripting. Instead of relying on numerous behavior tree nodes responding to designer commands, we created a more data-driven solution.
+
+<Steps>
+
+### Step 1: Bot Command Queue
+
+The system revolves around a bot command queue, which stores designer-created commands that an AI entity will execute.
+
+### Step 2: Bot Commands
+
+Bot commands are polymorphic data structures that encapsulate the necessary information to start a specific behavior or state. For instance, a `PlayAnim` command would contain data for a `PlayAnim` state, such as the animation to play.
+
+### Step 3: Behavior Scripted
+
+The behavior tree has a node called `Behavior Scripted`, which instantiates a behavior of the same name. This behavior pulls commands from the queue one by one and uses them to create sub-behaviors or states.
+
+</Steps>
+
+Here's an example of issuing commands from a script:
+
+```
+// Request control of a bot
+// Tell the bot to go to a position, face its target, and play an animation
+bot.IssueCommands(
+  new GotoPositionCommand(position),
+  new FaceTargetCommand(target),
+  new PlayAnimCommand(animationAsset)
+);
+```
+
+[Diagram to be made of the data-driven scripting control system architecture]
+
+This system allowed us to data-drive interesting player-facing problems while handling the complex logic reliably in code, striking a balance between flexibility and robustness.
+
+### Data-Driven Melee Combat
+
+Another significant area where we embraced a data-driven approach was in melee combat. At the heart of this system lies the concept of "combo moves" – polymorphic data structures that encapsulate all the necessary information to execute an attack action, such as a melee strike or a projectile throw.
+
+[Diagram to be made of the data hierarchy for combo moves]
+
+These combo moves are organized into "combo entries," which contain additional data like cooldowns, valid ranges, and conditions for when the combo can be used. The AI class then has a "combo config" – a list of these combo entries.
+
+During combat, the AI component `BotCombos` selects the most appropriate combo entry based on various factors, such as distance to the target and validity conditions. The selected combo entry is then passed to the `BehaviorUseCombo`, which uses the data to start the appropriate sub-behavior or state for executing the attack.
+
+This data-driven approach allowed us to easily add new moves without changing complex transition logic, loosely couple our states with data, and control what data was exposed to designers.
+
+While our initial implementation had some inefficiencies, such as lengthy if-else chains for handling different move types, the overall paradigm of data-driving combat behavior proved invaluable in creating a large number of unique AI classes with varying capabilities.
+
+By embracing data-driven hierarchical finite state machines, we could share logic across enemy types, iterate more rapidly on gameplay, and maintain a clear separation between designer-facing data and complex code implementation. This architectural shift was instrumental in bringing the diverse cast of enemies in Marvel's Spider-Man to life.

@@ -1,0 +1,46 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Moving Platforms
+
+One of the challenging scenarios we encountered during the development of Marvel's Spider-Man was handling combat encounters on moving platforms, particularly on the back of a moving truck. This posed several difficulties that required workarounds and compromises.
+
+**The Challenges**
+
+- **Static Nav Mesh**: Our engine's navigation mesh system did not support dynamic updates or movement. This meant that the nav mesh had to be generated upfront, making it difficult to handle moving platforms accurately.
+
+- **Position Calculations**: Many of our AI systems performed calculations in world space. With a moving platform, positions would not line up correctly from frame to frame, leading to various bugs and inconsistencies.
+
+- **Attachment Issues**: Our engine did not have robust support for attaching entities to moving objects. We had to rely on specific components to manually update the positions of attached entities, which was cumbersome and error-prone.
+
+- **Collision Handling**: When enemies or Spider-Man were thrown off the moving truck, they could get shoved through nearby geometry if they were standing close to the truck's edges.
+
+**The Workarounds**
+
+To mitigate these challenges, we had to make some compromises and implement workarounds:
+
+<Steps>
+
+### Step 1
+
+Simplify the Nav Mesh: We had to keep the nav mesh for the truck as simple as possible, allowing enemies to reliably path to Spider-Man using straight-line movements. This limited the complexity of the combat encounters on the moving platform.
+
+### Step 2
+
+Implement Kill Volumes: To prevent enemies or Spider-Man from getting shoved through geometry when thrown off the truck, we placed "kill volumes" along the sides of the moving truck. Any character entering these volumes would be removed from the encounter.
+
+</Steps>
+
+While these workarounds allowed us to ship the game with functional combat on the moving truck, they were not ideal solutions. The limited nav mesh restricted the complexity of the encounters, and the kill volumes introduced some artificial limitations.
+
+<Callout emoji="⚠️">
+[Diagram to be made of the nav mesh simplification and kill volume implementation on the moving truck]
+</Callout>
+
+Looking back, we underestimated the challenges posed by moving platforms and the limitations of our engine's systems. In future projects, we would prioritize more robust support for dynamic nav mesh updates and better attachment handling for moving objects.
+
+For developers working on games with moving platforms or dynamic environments, it's crucial to consider the engine's capabilities and limitations early on. Investing in systems that can handle dynamic updates and attachment to moving objects can significantly simplify the development process and allow for more complex and immersive gameplay scenarios.
+
+**Related Sections**
+
+- [Performance](/challenges-and-shortcomings/performance): Performance issues related to running complex AI in an open world and the limitations faced.
+- [Nav Mesh](/challenges-and-shortcomings/nav-mesh): Challenges with navigation mesh generation and loading, especially with the changing game world.

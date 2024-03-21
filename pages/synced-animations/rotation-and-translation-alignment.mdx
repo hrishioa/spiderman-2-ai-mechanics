@@ -1,0 +1,37 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Rotation and Translation Alignment
+
+Spider-Man's combat moves often involve him moving around and attacking enemies from various angles. To ensure that these attacks look natural and realistic, the synced animation system needs to properly align the rotations and translations of Spider-Man (the host) and his target (the guest).
+
+There are several different options for aligning the rotation and translation of the characters during a synced animation. Let's explore them:
+
+<Steps>
+
+### Step 1: Rotation Alignment
+
+**Host-to-Guest (Center Line):** This is the most common rotation alignment method used in Marvel's Spider-Man. In this mode, both the host (Spider-Man) and the guest (the enemy) rotate to face each other along a line drawn between their centers. This ensures that their forward vectors are aligned, creating a natural-looking interaction.
+
+**Host Orientation Only:** In this mode, only Spider-Man rotates to face the target enemy, while the enemy maintains its current orientation. This is rarely used in the game, as it can create some unnatural-looking interactions.
+
+**Guest Orientation Only:** Conversely, this mode keeps Spider-Man's orientation fixed, while the enemy rotates to face him. Like the previous mode, this is not commonly used in the game.
+
+**External Anchor:** In some cases, the desired orientation for the synced animation is determined by an external factor, such as the direction the player is pushing the movement stick. In this mode, both characters rotate towards the specified external orientation.
+
+> **Example:** During a kick-throw move, Spider-Man can kick an enemy in any direction specified by the player's movement input. The synced animation system uses an external anchor mode to orient both characters towards the desired throw direction.
+
+### Step 2: Translation Alignment
+
+**Host-as-Anchor:** In this mode, Spider-Man remains stationary, while the guest (the enemy) moves to align with the sync joint's position on Spider-Man's model. This is often used in situations where Spider-Man is stuck or immobilized, but needs to interact with an enemy.
+
+**Guest-as-Anchor:** This is the most common translation alignment mode used in the game. In this case, Spider-Man moves to align with the sync joint's position on the enemy's model. This allows for natural-looking attacks where Spider-Man repositions himself to strike the enemy.
+
+[Diagram to be made of showing the different rotation and translation alignment modes]
+
+**External Anchor (Unused):** Similar to the rotation case, there is an option to use an external position as the anchor for translation alignment. However, this mode is not used in the shipping game.
+
+</Steps>
+
+The choice of rotation and translation alignment modes depends on the specific situation and the desired outcome of the synced animation. By providing multiple options, the system can handle a wide range of combat scenarios, ensuring that Spider-Man's attacks and interactions with enemies look fluid and natural.
+
+For more information on the host and guest concept, and the role of the sync joint, refer to the [Host and Guest Concept](/synced-animations/host-and-guest-concept) and [Sync Joint](/synced-animations/sync-joint) sections, respectively.

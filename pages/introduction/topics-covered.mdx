@@ -1,0 +1,23 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Topics Covered
+
+In this presentation, I'll be discussing several key aspects of the AI architecture and development process for Marvel's Spider-Man. Here's a quick preview of the topics I'll be covering:
+
+- **Behavior Authoring**: I'll start by talking about the high-level trends we observed during development, particularly the shift from complex behavior trees to data-driven hierarchical finite state machines. This transition was driven by the need to manage the large number of AI characters and behaviors in the game. [Learn more about the transition](/behavior-authoring/transition-to-data-driven-fsms).
+
+<Callout>
+As our behaviors became more robust, we began to data-drive more of them. This allowed us to share structure and behaviors across different AI classes, making it easier to manage the large number of enemy types in the game.
+</Callout>
+
+- **Synced Animations**: One of the key goals for the game was to achieve a "comic book movie feel." To accomplish this, we developed a system for syncing animations between Spider-Man and his foes during combat. I'll give an overview of how this synced animation system works, including concepts like the host (attacker) and guest (victim), the sync joint, and different alignment options for rotation and translation. [Dive deeper into synced animations](/synced-animations/host-and-guest-concept).
+
+[Diagram to be made of the synced animation system, showing the host, guest, and sync joint concept]
+
+- **Combat Iteration**: Getting the combat fundamentals right was crucial for creating an engaging Spider-Man experience. I'll walk through some of the core problems we faced and the iterations we went through to address issues like cheap hits, positioning, and managing attack pacing for both melee and ranged combat. [Learn more about the combat iteration process](/combat-iteration/melee-combat-management).
+
+- **Procedural Animation Techniques**: To handle certain situations, like attaching webs to uneven surfaces or simulating whip-style weapons, we developed some procedural animation solutions specifically for Spider-Man. I'll give an overview of these techniques and how they were implemented. [Explore the procedural animation techniques](/procedural-animation-techniques/web-blanket).
+
+- **Challenges and Shortcomings**: No development process is perfect, and we faced our fair share of challenges and areas where we fell short. I'll briefly discuss some of the biggest challenges we encountered, such as dealing with flying enemies, combat on moving platforms, navigation mesh generation, and performance limitations. [Discover the challenges we faced](/challenges-and-shortcomings/flying-enemies).
+
+By the end of this presentation, you'll have a better understanding of the AI architecture and development process behind Marvel's Spider-Man, as well as some of the key innovations and challenges we faced along the way.

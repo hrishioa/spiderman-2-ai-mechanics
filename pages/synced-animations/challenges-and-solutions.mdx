@@ -1,0 +1,55 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Challenges and Solutions
+
+When developing the AI for Marvel's Spider-Man, our team at Insomniac Games encountered several challenges that required creative solutions. In this section, we'll explore some of the most significant obstacles we faced and how we addressed them.
+
+## Height Differences and Environment Interaction
+
+One of the primary goals for synced animations in Marvel's Spider-Man was to achieve a high degree of fidelity in combat animations and reactions. However, we quickly realized that characters could be at different heights or in unexpected poses due to ragdoll physics, which made it challenging to seamlessly blend animations.
+
+To tackle this issue, we implemented several strategies:
+
+<Callout type="warning">
+While synced animations provided a cinematic feel, they also introduced challenges when characters were at different heights or positions than their original animations.
+</Callout>
+
+<Steps>
+
+### Step 1: Annotated Sync Points
+
+All synced attacks had annotated sync points and release points. For stealth takedowns and combat finishers with animated cameras, we could hide floating characters by pulling the camera in before reaching the sync point and pushing it back out after the release point.
+
+### Step 2: Procedural Web Adjustment
+
+In cases where height differences couldn't be hidden, we made use of procedural webbing techniques. Animated webs were adjusted joint by joint to match the final transform positions if the sync joint was properly aligned.
+
+[Diagram to be made of procedural web adjustment]
+
+### Step 3: Character Movement System
+
+Our character movement system remained active during synced animations. If one character collided with an object and couldn't fully align, the other character would adjust their position accordingly to maintain synchronization.
+
+</Steps>
+
+While these solutions helped mitigate the issue, there were still instances where height differences or environmental obstacles caused imperfect alignment, which we had to accept as a trade-off for achieving the desired cinematic feel.
+
+## Multi-Character Interactions
+
+Another limitation of our synced animation system was that it only supported two characters: a host (attacker) and a guest (victim). As development progressed, there was a growing demand for finishers that allowed Spider-Man to take down multiple foes simultaneously.
+
+Unfortunately, our system wasn't designed to handle such scenarios, and extending it to support more than two characters would have required significant effort. We had to prioritize other tasks, leaving this feature request unfulfilled.
+
+<Callout type="info">
+While our synced animation system provided a cinematic experience, it was limited to interactions between two characters, which prevented us from implementing multi-character finishers that were requested late in development.
+</Callout>
+
+## Synced Animation Scalability
+
+Another drawback of using synced animations was the time and effort required to add new attacks or character skeletons to the game. Each attack animation typically needed a corresponding reaction animation for every potential victim skeleton, which quickly became labor-intensive as the number of enemy types grew.
+
+While our use of a synced joint allowed us to mitigate this issue to some extent by sacrificing fidelity, it highlighted the scalability challenges associated with synced animations, especially in games with a diverse cast of characters.
+
+[Diagram to be made of synced animation scalability challenges]
+
+Overall, while synced animations provided a cinematic and immersive combat experience, they introduced challenges related to character positioning, environmental interaction, multi-character interactions, and scalability. Our team had to carefully balance these trade-offs to deliver the desired gameplay experience within the constraints of our development timeline and resources.

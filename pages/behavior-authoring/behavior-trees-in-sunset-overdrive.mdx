@@ -1,0 +1,55 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Behavior Trees in Sunset Overdrive
+
+When we first implemented behavior trees into our engine, they tended to have a complex structure. Let's examine a subtree that drove the behavior of ranged enemies in Sunset Overdrive:
+
+<Callout type="warning">
+This simple subtree uses 34 discrete nodes, many of which just map to a simple AI state like playing an animation, shuffling around, meleeing, or aiming.
+</Callout>
+
+[Diagram to be made of the subtree structure with 34 nodes]
+
+The parameters for these states were largely configured by the behavior tree and passed through behaviors that only instantiated a single state. To achieve the desired AI behavior, things often became quite complicated:
+
+- Nodes had to utilize numerous callback functions for tasks like:
+  - Deciding whether to run
+  - Determining if a state should continue running
+  - Notifying other systems when a state starts or ends
+  - Weapon management
+
+- The order in which child nodes were selected (group policy) had to be carefully considered. There were three types:
+  - Priority ranking
+  - Sequential execution
+  - Highest value from a decider callback
+
+- Additional decorators, flags, and confusing options further added to the complexity.
+
+While these behavior trees worked, they were often complicated and difficult to debug when issues arose.
+
+<Callout type="warning">
+Furthermore, one of the advantages of behavior trees is that they're supposed to be composable and reusable. However, we found the opposite to be true when the trees became complicated. We often needed to consider how both a node's siblings and ancestors functioned, making reusability challenging.
+</Callout>
+
+Here's an example of a simple node trying to make an enemy aim at a target over a railing:
+
+<Steps>
+
+### Step 1
+The node needs a callback to decide if it should run.
+
+### Step 2
+Since the state doesn't end, another callback is needed to determine if it should continue running.
+
+### Step 3 
+A callback is required to notify another system when the character starts aiming over the railing.
+
+### Step 4
+Weapon management is not handled by the state, so a callback is added to manage that.
+
+### Step 5
+Another callback is needed to notify when the character is done using the railing.
+
+</Steps>
+
+This resulted in five separate callbacks for a seemingly simple behavior, showcasing the complexity that could arise.

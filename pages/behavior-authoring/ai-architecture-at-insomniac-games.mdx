@@ -1,0 +1,59 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# AI Architecture at Insomniac Games
+
+At Insomniac Games, we have our own proprietary engine, and the vast majority of our code is written in C++. We've been using a specific AI architecture in our engine since around 2012. In this section, we'll dive into the details of this architecture and how it has been utilized in our games.
+
+To begin with, let's clarify some terminology. Throughout this section, we'll use the terms "AI" and "bots" interchangeably to refer to the non-player characters (NPCs) controlled by our AI systems.
+
+<Callout>
+**Note:** The AI architecture discussed here is specific to Insomniac Games' proprietary engine and may differ from other game engines or frameworks.
+</Callout>
+
+## Overview
+
+Our AI architecture follows a hierarchical structure, with a behavior tree at the top level that decides which behavior to run. Behaviors can have an arbitrary number of sub-behaviors, but eventually, a behavior will instantiate a state. These states are the leaf nodes of the hierarchy, and they control animation, motion, and other player-facing actions.
+
+Here's a high-level representation of the architecture:
+
+[Diagram to be made of the AI architecture overview]
+
+## Behavior Trees
+
+In our engine, behavior trees serve as the top-level decision-making system for our AI. They determine which behaviors should be executed based on various conditions and rules.
+
+<Callout type="warning">
+While behavior trees were initially a prominent part of our AI architecture, we gradually transitioned towards a more data-driven approach in Marvel's Spider-Man, as you'll see in the [Transition to Data-Driven FSMs](/behavior-authoring/transition-to-data-driven-fsms) section.
+</Callout>
+
+To illustrate how behavior trees worked in our previous games, let's look at an example from Sunset Overdrive:
+
+[Diagram to be made of a behavior tree example from Sunset Overdrive]
+
+This behavior tree excerpt shows a portion responsible for controlling ranged enemy behavior. As you can see, even for a relatively simple subtree, it required a significant number of nodes (34 in this case) to define the desired behavior.
+
+<Steps>
+
+### Step 1
+Nodes in the behavior tree often needed to utilize various types of callback functions to handle different scenarios, such as:
+
+- Deciding when a node should run
+- Determining if a state should continue running
+- Notifying other systems when a state starts or stops
+- Handling additional logic not covered by the state itself (e.g., weapon management)
+
+### Step 2
+Additionally, the order in which nodes were evaluated (known as the group policy) played a crucial role in ensuring the correct behavior. Our engine supported three types of group policies:
+
+- Priority ranking: Nodes are evaluated in a predefined order of importance.
+- Sequence: Nodes are evaluated one after the other in a specific sequence.
+- Highest score: The node with the highest score from a decider callback is selected.
+
+</Steps>
+
+While behavior trees allowed us to create complex AI behaviors, they also introduced challenges:
+
+- Trees could become convoluted and difficult to debug as complexity increased.
+- Reusability and composability of nodes were often limited due to the need to consider sibling and ancestor node interactions.
+
+As we moved towards developing Marvel's Spider-Man, which featured a significantly larger number of AI classes and variations, we recognized the need to evolve our approach to behavior authoring.

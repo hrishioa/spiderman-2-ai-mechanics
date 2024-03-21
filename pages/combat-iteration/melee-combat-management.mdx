@@ -1,0 +1,55 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Melee Combat Management
+
+Creating engaging and fair melee combat encounters was a crucial aspect of Marvel's Spider-Man. The team at Insomniac Games went through several iterations to refine the melee combat manager, ensuring that battles felt challenging yet enjoyable for the player.
+
+Initially, the system was designed to have a single attack job, which would be granted to an enemy unless the player had recently dodged, in which case they'd receive a brief window to counterattack. This basic scheme determined which enemy received the attack job based on a priority calculated from factors such as the time spent waiting, proximity to the ideal attack range, and a bonus value for high-priority enemies.
+
+However, this initial implementation had some issues:
+
+<Callout type="warning">
+- Enemies with the attack job would often be too far away to execute their attack quickly, leading to a lack of aggression.
+- Encounters could feel predictable and monotonous during prolonged battles.
+</Callout>
+
+To address these problems, the team implemented two key solutions:
+
+<Steps>
+
+### Step 1
+
+**Job Stealing and Proximity Attacks**
+
+- If an enemy could immediately start an attack, and another enemy had been chasing their target for too long, the job could be "stolen" by the enemy ready to attack.
+- The manager could occasionally create an attack job if the player stood too close to an enemy for more than a split second.
+
+</Steps>
+
+<Steps>
+
+### Step 2
+
+**Intensity Meter**
+
+- An intensity meter filled as enemies attacked and was spent by the manager to either grant multiple attack jobs simultaneously or rapidly issue them in sequence.
+- This added an element of unpredictability and intensity to prolonged encounters.
+
+</Steps>
+
+Here's a visual example of the intensity meter in action:
+
+[Diagram to be made of intensity meter UI and job allocation]
+
+These changes helped address situations where combat felt too passive or predictable, ensuring a more dynamic and engaging experience for the player.
+
+Additionally, the team made further adjustments to account for different combat scenarios, such as:
+
+- Prioritizing on-screen enemies for ranged attack jobs to reduce frustration from off-screen attacks.
+- Delaying ranged attacks when enemies were off-screen to give the player more time to react to Spider-Sense warnings.
+- Adjusting timing values and cooldowns when melee enemies were present or when the player engaged in air combat.
+- Implementing an "air aggression" mechanic that increased the likelihood of enemies immediately exiting their cooldown phase when the player performed multiple actions in the air.
+
+Finally, to mitigate situations where the player felt unfairly hit, the team introduced the [Beat to the Punch System](/combat-iteration/beat-to-the-punch-system). This system ensured that Spider-Man would win interactions where he and an enemy were attacking simultaneously, granting him temporary immunity from the enemy's attack until he completed his own attack.
+
+By iterating on the melee combat manager and implementing these various solutions, the team at Insomniac Games achieved a combat system that felt challenging, fair, and true to the Spider-Man experience.

@@ -1,0 +1,66 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Challenges and Shortcomings
+
+Despite the significant achievements in developing the AI system for Marvel's Spider-Man, the Insomniac Games team encountered several challenges and areas where they fell short. In this section, we'll explore some of the key challenges faced and the limitations of the implemented solutions.
+
+## Flying Enemies
+
+One area where the team struggled was developing tech for flying enemies. As Newnchester mentioned, they didn't have enough time to dedicate to this aspect, which ultimately hindered the experience with certain enemies, such as the disabled jetpack troopers and the flying bosses Electro and Vulture.
+
+For the jetpack troopers, the solution was to have them hover over the navigation mesh and grant them the ability to go off-mesh if they could see their destination. However, this approach often resulted in unnatural steering behaviors, with enemies navigating around obstacles at ground level.
+
+<Callout>
+[Diagram to be made of jetpack trooper navigating around obstacles at ground level]
+</Callout>
+
+As for Electro and Vulture, the team used a collection of volumes linked by splines. Within these volumes, the characters could move freely, and they could transfer between volumes using the splines. While this solution worked for these specific boss encounters, it was not a scalable solution for the entire game, as all the volumes and splines had to be hand-authored.
+
+## Moving Platforms
+
+Another significant challenge arose when implementing combat scenarios on moving platforms, such as trucks. The team's navigation mesh system couldn't handle moving meshes, forcing them to simplify the spaces as much as possible to ensure enemies could reliably navigate to Spider-Man using straight-line paths.
+
+<Callout>
+[Diagram to be made of combat on a moving truck]
+</Callout>
+
+Additionally, many states and components within the engine performed calculations in world space, leading to bugs when positions didn't line up correctly from frame to frame due to the moving platform. Furthermore, the engine's attachment system presented limitations, requiring the use of specific components to manually update all attached entities.
+
+To address issues with enemies or the player being shoved through geometry by the moving truck, the team had to place kill volumes along the sides of the truck as it moved.
+
+## Nav Mesh
+
+The navigation mesh system proved to be another underestimated challenge. While the team did receive some new features for the project, such as the ability to perform dynamic cutouts from the nav mesh (which was instrumental for parked cars and certain crimes), they struggled to adapt to the creative vision of changing Manhattan as the story progressed.
+
+<Callout>
+[Diagram to be made of dynamic nav mesh cutouts]
+</Callout>
+
+As the game world became more chaotic, with Sable International setting up checkpoints, escaped prisoners erecting bases, and garbage piling up, the team needed a way to load different nav meshes based on the game state. However, their nav mesh system was built and loaded on a per-tile basis, making it challenging to express and load different states at build time.
+
+The solution was to generate the nav mesh in its most complicated state and then attempt to disable parts of it from script. While this approach worked well enough to create the desired environments, it often led to bugs and forced the team to remove certain open-world activities from specific areas during earlier acts of the story.
+
+## Performance
+
+Unsurprisingly, running complex AI in an open world led to performance issues. The team had a limit of around 30 active and engaged enemies, factoring in Spider-Man, traffic, and pedestrians.
+
+<Steps>
+
+### Step 1
+The primary performance bottlenecks were related to physics calculations and core AI logic running on the main thread.
+
+### Step 2
+Physics calculations were spread across multiple cores, but the time spent on these calculations grew proportionally with the number of enemies.
+
+### Step 3
+Additionally, a significant portion of the main thread was consumed by bot-specific logic, even excluding the character movement and animation systems.
+
+</Steps>
+
+While the team optimized and managed these performance constraints, they ultimately faced limitations in the number of enemies they could have active at any given time in the open world.
+
+[Link to Performance Optimization Techniques](/ai-architecture/performance-optimization)
+
+---
+
+Despite these challenges and shortcomings, the AI system for Marvel's Spider-Man was a remarkable achievement, providing players with an immersive and engaging experience. The team's ability to identify and address these issues through innovative solutions and iterative development contributed significantly to the game's overall success.

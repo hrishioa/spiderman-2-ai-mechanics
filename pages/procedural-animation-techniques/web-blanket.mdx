@@ -1,0 +1,53 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Web Blanket
+
+One of the goals for Marvel's Spider-Man was to allow Spider-Man to use his webs to stick enemies to surfaces. However, we faced a challenge because we had a lot of uneven and complex surfaces in the game environment, and the enemies could end up in unexpected poses due to ragdoll physics. Simply spawning a pre-baked model or decal would not work in these scenarios.
+
+To solve this problem, we developed a procedural system called the "Web Blanket." Here's how it works:
+
+<Steps>
+
+### Step 1
+
+The system starts by generating an ideal world-space orientation for attaching the web, which is passed to Spider-Man and the Web Blanket system.
+
+### Step 2
+
+The Web Blanket is a model of a web with a 6x6 lattice of joints. Initially, the blanket is compact and positioned at the desired attachment point.
+
+</Steps>
+
+<Callout>
+**Key Point:** The Web Blanket is a dynamic, procedural system that adapts to the environment and character poses, rather than a pre-baked model.
+</Callout>
+
+When spawned, the Web Blanket projects rays from a position above the initial attachment point, through the positions of each joint on the blanket model (assuming it was naively placed at the initial position). Where each ray hits a surface or object is where the corresponding joint will be attached.
+
+[Diagram to be made of the initial ray projection from the Web Blanket]
+
+If a ray doesn't hit anything, it is rotated towards the blanket's initial point. This causes the blanket to wrap around the object it's attaching to, conforming to its shape.
+
+<Steps>
+
+### Step 3
+
+After the initial ray projections, each joint on the blanket interpolates smoothly towards the position found by its corresponding raycast.
+
+</Steps>
+
+[Diagram to be made of the Web Blanket joints moving to their raycast hit positions]
+
+Additionally, the joints are allowed to rescan and update their positions for a period of time before locking in place. This adaptation feature enables the Web Blanket to adjust to settling ragdolls or animating characters without bunching up on itself.
+
+<Callout>
+**Example:** If an enemy is initially standing but then falls into a ragdoll pose after being hit, the Web Blanket will adapt to the new pose as the joints rescan and update their positions.
+</Callout>
+
+In certain cases, such as [stealth takedowns](/combat-iteration/stealth-takedowns) or [combat finishers](/combat-iteration/combat-finishers) that use animated cameras, we can hide floating characters by pulling the camera in before reaching the sync point and pushing it back out after the release point. This technique helps to mask any potential issues caused by height differences between the characters and the environment.
+
+Another solution we employed was the use of procedural webbing. In situations where the characters were at different heights from how they were animated or motion-captured, we could animate the webbing and then procedurally alter it joint by joint to match the final transforms of the sync joint if it were properly aligned.
+
+[Diagram to be made of procedural webbing adjusting to different character heights]
+
+The Web Blanket system was a crucial part of our arsenal, allowing us to create dynamic and visually impressive web attachment effects that seamlessly adapted to the game's environments and character states.

@@ -1,0 +1,34 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Sync Joint
+
+The sync joint is a critical component in Insomniac Games' synced animation system, which was designed to achieve the desired "comic book movie feel" in Marvel's Spider-Man. It serves as the anchor point that ensures precise alignment between the attacker's (host) and the victim's (guest) animations during combat interactions.
+
+<Callout>
+The sync joint is a joint on the host character that has a position and orientation that will match the guest character when the synced animations are played back.
+</Callout>
+
+The sync joint's primary purpose is to facilitate the seamless synchronization of animations between Spider-Man (the host) and his foes (the guests). This synchronization is crucial for delivering a visually striking and immersive combat experience, where every punch, kick, and web-slinging maneuver feels fluid and connected.
+
+[Diagram to be made of the sync joint concept, showing the host and guest characters, with the sync joint highlighted on the host]
+
+To better understand the role of the sync joint, let's consider an example. Imagine Spider-Man is about to deliver a powerful punch to an enemy. The sync joint on Spider-Man's model is positioned and oriented in such a way that, at the moment of impact, it will align perfectly with a specific point on the enemy's model. This alignment ensures that Spider-Man's punch animation seamlessly transitions into the enemy's reaction animation, creating a cohesive and visually stunning combat sequence.
+
+<Steps>
+
+### Step 1
+As Spider-Man's attack animation approaches the impact frame, the sync joint's position and orientation are continuously updated to match the target position on the enemy's model.
+
+### Step 2
+At the moment of impact, the sync joint on Spider-Man's model is perfectly aligned with the corresponding point on the enemy's model.
+
+### Step 3
+The enemy's reaction animation is triggered, and their model is repositioned and oriented to match the sync joint's position and orientation, creating a seamless transition from Spider-Man's attack animation to the enemy's reaction.
+
+</Steps>
+
+The sync joint concept is not limited to just Spider-Man's attacks; it can also be used for enemies attacking Spider-Man or even for interactions between enemies. The key principle remains the same: the sync joint on the attacker (host) aligns with a specific point on the victim (guest) to ensure fluid transitions between animations.
+
+By utilizing the sync joint, Insomniac Games was able to achieve a level of fidelity and synchronization in their combat animations that contributed significantly to the overall "Marvel feel" of the game. It allowed for seamless blending of mocapped animations, creating a visually stunning and immersive combat experience for players.
+
+For more information on how the sync joint is used in conjunction with rotation and translation alignment techniques, check out the [Rotation and Translation Alignment](/synced-animations/rotation-and-translation-alignment) section.

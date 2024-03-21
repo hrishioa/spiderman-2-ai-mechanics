@@ -1,0 +1,76 @@
+import { Callout, Steps, Step } from "nextra-theme-docs";
+
+# Ranged Combat Management
+
+Ranged combat was another crucial aspect of the AI system in Marvel's Spider-Man, and it required a fair amount of iteration to get right. The initial approach was relatively simple but fell short in providing an engaging and fair experience.
+
+<Steps>
+### Step 1: Initial Setup
+
+The ranged combat manager started with the following setup:
+
+- A cooldown window where no shooters could receive attack jobs
+- An attack window where shooters could receive attack jobs
+- A maximum number of simultaneous attack jobs
+- A delay that prevented the manager from giving out jobs too rapidly
+
+</Steps>
+
+While this setup kept things from becoming chaotic, it led to situations that felt unfair for the player, particularly when being shot from off-screen.
+
+<Callout type="warning">
+Being shot from off-screen with little warning or opportunity to react was a major source of player frustration.
+</Callout>
+
+### Prioritizing On-Screen Enemies
+
+To address the issue of off-screen attacks, the ranged combat manager was updated to prioritize giving jobs to on-screen enemies whenever possible. This ensured that players were primarily engaged with enemies they could see and react to.
+
+[Diagram to be made of the on-screen prioritization system]
+
+However, there were still times when all valid shooters were off-screen, leading to potential unfair situations.
+
+### Delayed Off-Screen Attacks
+
+To mitigate this, enemies were made to take longer to fire when they were off-screen. This gave players more time to notice the Spider-Sense warning and react accordingly.
+
+- On-screen enemy attacks had a warning duration of 0.75 seconds
+- Off-screen enemy attacks had a warning duration of 1.5 seconds
+
+[Diagram to be made of the delayed off-screen attack timing]
+
+### Handling Melee Enemies
+
+As the game progressed, encounters often involved a mix of ranged and melee enemies. To account for this, the designers were given the option to specify a separate set of values for the ranged combat manager when melee enemies were present.
+
+- Shorter active time for ranged attacks
+- Longer cooldown periods between ranged attack windows
+
+However, this led to a new issue where ranged enemies felt unresponsive during air combat sequences, as the slower timing values made them seem unresponsive for several seconds at a time.
+
+### Air Aggression
+
+To address the air combat responsiveness issue, the concept of "air aggression" was introduced. Once the player performed enough actions in the air, there was a 50% chance that the ranged combat manager would immediately exit the cooldown period and become active again.
+
+This ensured that ranged enemies remained responsive and engaged during intense air combat sequences, without punishing the player for utilizing Spider-Man's aerial abilities.
+
+[Diagram to be made of the air aggression system]
+
+### Canceling Cheap Attacks
+
+Even after all these iterations, players still felt that there were instances where they were attacked unfairly or "cheaply." To mitigate this, a list of player actions was created that would cause the managers to cancel any attack jobs that had not yet started.
+
+These actions included:
+
+- Web throwing environmental interactables
+- Web striking a new target
+- Using an air launcher on a target
+- Dodging or perfect dodging an attack
+- Using a finisher
+- Jumping off an enemy
+- Jumping or landing
+- Being hit by an attack
+
+Unless the player abused these actions repeatedly, the incoming attacks would be canceled, ensuring a fairer combat experience. Special exceptions were made for boss fights, where the jobs would persist to maintain the intended challenge.
+
+By continuously iterating on the ranged combat manager, the team at Insomniac Games was able to strike a balance between challenging and fair encounters, ultimately creating a satisfying ranged combat experience for players.
